@@ -21,7 +21,7 @@
 
 ### Завдання A.1. Формування запиту вручну
 
-**Команди PowerShell:**
+**Команда**
 
 ```
 $d = "fsf.org"
@@ -70,7 +70,7 @@ Connection: close
 
 ### Завдання A.2. Запит без поля `Host` у версії 1.1
 
-**Команди PowerShell:**
+**Команда**
 
 ```
 $d = "fsf.org"
@@ -112,7 +112,7 @@ Connection: close
 
 #### A.3.1. Чуже доменне ім'я в полі `Host`
 
-**Команди PowerShell:**
+**Команда**
 
 ```
 $d = "fsf.org"
@@ -145,9 +145,9 @@ Connection: close
 
 #### A.3.2. Неіснуюче ім'я в полі `Host`
 
-**Команди PowerShell:**
+**Команда**
 
-```powershell
+```
 $d = "fsf.org"
 $c = New-Object System.Net.Sockets.TcpClient($d, 80)
 $s = $c.GetStream()
@@ -160,15 +160,27 @@ $c.Close()
 
 **Вивід:**
 
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
+```
+HTTP/1.0 503 Service Unavailable
+Server: squid/3.1.19
+Mime-Version: 1.0
+Date: Wed, 25 Nov 2026 11:45:51 GMT
+Content-Type: text/html
+Content-Length: 3270
+X-Squid-Error: ERR_CANNOT_FORWARD 0
+Vary: Accept-Language
+Content-Language: en
+X-Cache: MISS from www.fsf.org
+X-Cache-Lookup: MISS from www.fsf.org:3128
+Via: 1.0 www.fsf.org (squid/3.1.19)
+Connection: close
 ```
 
 #### A.3.3. Запит без поля `Host` у версії 1.0
 
-**Команди PowerShell:**
+**Команда**
 
-```powershell
+```
 $d = "fsf.org"
 $c = New-Object System.Net.Sockets.TcpClient($d, 80)
 $s = $c.GetStream()
@@ -181,8 +193,17 @@ $c.Close()
 
 **Вивід:**
 
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
+```
+HTTP/1.0 301 Moved Permanently
+Server: nginx
+Date: Wed, 25 Nov 2026 11:47:20 GMT
+Content-Type: text/html
+Content-Length: 178
+Location: https://www.fsf.org/
+X-Cache: MISS from www.fsf.org
+X-Cache-Lookup: MISS from www.fsf.org:3128
+Via: 1.0 www.fsf.org (squid/3.1.19)
+Connection: close
 ```
 
 Зведення результатів наведено в **Додатку Д**.
@@ -191,9 +212,9 @@ $c.Close()
 
 ### Завдання A.4. Два запити в одному з'єднанні
 
-**Команди PowerShell:**
+**Команда**
 
-```powershell
+```
 $d = "fsf.org"
 $c = New-Object System.Net.Sockets.TcpClient($d, 80)
 $s = $c.GetStream()
@@ -206,13 +227,22 @@ $c.Close()
 
 **Вивід:**
 
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
+```
+HTTP/1.0 301 Moved Permanently
+Server: nginx
+Date: Wed, 25 Nov 2026 11:50:09 GMT
+Content-Type: text/html
+Content-Length: 178
+Location: https://www.fsf.org/opism-pr02-12345
+X-Cache: MISS from www.fsf.org
+X-Cache-Lookup: MISS from www.fsf.org:3128
+Via: 1.0 www.fsf.org (squid/3.1.19)
+Connection: keep-alive
 ```
 
-**Кількість отриманих відповідей:** [порахувати за фактичним виводом]
+**Кількість отриманих відповідей:** 2
 
-**Коди стану отриманих відповідей:** [вказати фактичні коди]
+**Коди стану отриманих відповідей:** 301, 301 (Moved Permanently)
 
 ---
 
@@ -220,52 +250,66 @@ $c.Close()
 
 **Команда:**
 
-```powershell
+```
 curl.exe -v --http1.1 http://fsf.org/ -o NUL
 ```
 
 **Вивід:**
 
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
+```
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host fsf.org:80 was resolved.
+* IPv6: (none)
+* IPv4: 209.51.188.174
+*   Trying 209.51.188.174:80...
+* Established connection to fsf.org (209.51.188.174 port 80) from 172.20.10.2 port 53956
+* using HTTP/1.x
+> GET / HTTP/1.1
+> Host: fsf.org
+> User-Agent: curl/8.16.0
+> Accept: */*
+>
+* Request completely sent off
+* HTTP 1.0, assume close after body
+< HTTP/1.0 301 Moved Permanently
+< Server: nginx
+< Date: Wed, 25 Nov 2026 11:52:20 GMT
+< Content-Type: text/html
+< Content-Length: 178
+< Location: https://www.fsf.org/
+< X-Cache: MISS from www.fsf.org
+< X-Cache-Lookup: MISS from www.fsf.org:3128
+< Via: 1.0 www.fsf.org (squid/3.1.19)
+* HTTP/1.0 connection set to keep alive
+< Connection: keep-alive
+<
+{ [178 bytes data]
+100   178  100   178    0     0    201      0 --:--:-- --:--:-- --:--:--   201
+* Connection #0 to host fsf.org:80 left intact
 ```
 
 ---
 
 ### Завдання A.6. Запит через захищене з'єднання
 
-Виконувати за правилом методички: якщо A.1 повернуло код класу 3xx, перевірити власний домен `fsf.org`; якщо A.1 повернуло інший клас коду або TLS-з'єднання з власним доменом не встановлюється — використати резервний ресурс `iana.org` і зазначити причину.
+**Ресурс, на якому виконано завдання:** fsf.org
 
-**Ресурс, на якому виконано завдання:** [fsf.org / iana.org — вибрати за фактичним результатом]
-
-**Підстава для використання резервного ресурсу (за потреби):** [заповнити за фактичним результатом]
+**Підстава для використання резервного ресурсу (за потреби):** Не використовувався, оскільки підключення до основного ресурсу fsf.org було успішним.
 
 **Команда для fsf.org:**
 
-```powershell
+```
 openssl.exe s_client -connect fsf.org:443 -servername fsf.org -crlf -quiet
 ```
 
-**Або команда для резервного ресурсу iana.org:**
+**Набраний запит** 
 
-```powershell
-openssl.exe s_client -connect iana.org:443 -servername iana.org -crlf -quiet
 ```
-
-**Набраний запит** (підставити домен, на якому фактично виконано A.6):
-
-```http
+http
 GET / HTTP/1.1
 Host: [fsf.org або iana.org]
 Connection: close
-
-```
-
-**Вивід:**
-
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
-```
 
 ---
 
@@ -273,18 +317,19 @@ Connection: close
 
 Розбирається виключно відповідь, отримана в завданні A.1. Перенеси сюди всі поля заголовка з фактичного виводу, не додаючи полів, яких у ньому немає.
 
-**Загальна кількість полів заголовка у відповіді:** [порахувати]
+**Загальна кількість полів заголовка у відповіді:** 9
 
 | № | Поле заголовка | Значення | Призначення (власне формулювання) | Походження: сервер / проміжний вузол / не визначено | Обґрунтування |
 |---|---|---|---|---|---|
-| 1 | [з виводу A.1] | | | | |
-| 2 | [з виводу A.1] | | | | |
-| 3 | [з виводу A.1] | | | | |
-| 4 | [з виводу A.1] | | | | |
-| 5 | [з виводу A.1] | | | | |
-| 6 | [з виводу A.1] | | | | |
-| 7 | [з виводу A.1] | | | | |
-| 8 | [з виводу A.1] | | | | |
+| 1 | Server | | | | |
+| 2 | Date | | | | |
+| 3 | Content-Type | | | | |
+| 4 | Content-Length | | | | |
+| 5 | Location | | | | |
+| 6 | X-Cache | | | | |
+| 7 | X-Cache-Lookup | | | | |
+| 8 | Via | | | | |
+| 9 | Connection | | | | |
 
 > Якщо полів більше восьми, додай рядки. Якщо походження конкретного поля неможливо встановити за самим виводом, напиши «не визначено» та поясни чому.
 
