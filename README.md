@@ -11,23 +11,19 @@
 | Група | ЗПІ-21 |
 | Номер варіанта | 1 |
 | Індивідуальний домен | `fsf.org` |
-| «Чужий» домен для завдання A.3.1 | `arin.net` (варіант 16, тобто № 1 + 15) |
+| «Чужий» домен для завдання A.3.1 | `arin.net` |
 | Середовище виконання | Windows PowerShell |
 | Дата виконання | 25.11.2026 |
-
-> Увага: за таблицею Додатка А PDF для варіанта 1 призначено `fsf.org`. Для A.3.1 береться варіант, відмінний на 15, тобто № 16 — `arin.net`. У тексті бланка Markdown є розбіжність «±20», але в основному PDF-методичному документі (розділ A.3.1) зазначено ±15; у цій роботі використано правило з PDF.
 
 ---
 
 ## Частина A. Збір експериментальних даних
 
-> Важливо: виводи нижче потрібно отримати власноруч у PowerShell. Їх не можна вигадувати або генерувати. Перед здачею заміни кожен маркер `[ВСТАВИТИ ПОВНИЙ ВИВІД]` фактичним результатом своєї команди.
-
 ### Завдання A.1. Формування запиту вручну
 
 **Команди PowerShell:**
 
-```powershell
+```
 $d = "fsf.org"
 $c = New-Object System.Net.Sockets.TcpClient($d, 80)
 $s = $c.GetStream()
@@ -40,7 +36,7 @@ $c.Close()
 
 **Набраний запит:**
 
-```http
+```
 GET / HTTP/1.1
 Host: fsf.org
 Connection: close
@@ -49,8 +45,25 @@ Connection: close
 
 **Відповідь:**
 
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
+```
+HTTP/1.0 301 Moved Permanently
+Server: nginx
+Date: Wed, 25 Nov 2026 11:35:46 GMT
+Content-Type: text/html
+Content-Length: 178
+Location: https://www.fsf.org/
+X-Cache: MISS from www.fsf.org
+X-Cache-Lookup: MISS from www.fsf.org:3128
+Via: 1.0 www.fsf.org (squid/3.1.19)
+Connection: close
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
 ```
 
 ---
@@ -59,7 +72,7 @@ Connection: close
 
 **Команди PowerShell:**
 
-```powershell
+```
 $d = "fsf.org"
 $c = New-Object System.Net.Sockets.TcpClient($d, 80)
 $s = $c.GetStream()
@@ -72,8 +85,25 @@ $c.Close()
 
 **Вивід:**
 
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
+```
+HTTP/1.0 301 Moved Permanently
+Server: nginx
+Date: Wed, 25 Nov 2026 11:37:23 GMT
+Content-Type: text/html
+Content-Length: 178
+Location: https://www.fsf.org/
+X-Cache: MISS from www.fsf.org
+X-Cache-Lookup: MISS from www.fsf.org:3128
+Via: 1.0 www.fsf.org (squid/3.1.19)
+Connection: close
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
 ```
 
 ---
@@ -84,7 +114,7 @@ $c.Close()
 
 **Команди PowerShell:**
 
-```powershell
+```
 $d = "fsf.org"
 $c = New-Object System.Net.Sockets.TcpClient($d, 80)
 $s = $c.GetStream()
@@ -97,8 +127,20 @@ $c.Close()
 
 **Вивід:**
 
-```text
-[ВСТАВИТИ ПОВНИЙ ФАКТИЧНИЙ ВИВІД]
+```
+HTTP/1.0 503 Service Unavailable
+Server: squid/3.1.19
+Mime-Version: 1.0
+Date: Wed, 25 Nov 2026 11:42:35 GMT
+Content-Type: text/html
+Content-Length: 3240
+X-Squid-Error: ERR_CANNOT_FORWARD 0
+Vary: Accept-Language
+Content-Language: en
+X-Cache: MISS from www.fsf.org
+X-Cache-Lookup: MISS from www.fsf.org:3128
+Via: 1.0 www.fsf.org (squid/3.1.19)
+Connection: close
 ```
 
 #### A.3.2. Неіснуюче ім'я в полі `Host`
